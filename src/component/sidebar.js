@@ -4,11 +4,22 @@ import { Link } from 'react-router-dom';
 import 'tailwindcss/tailwind.css';
 import '../renderer/App.css';
 
-const Ids = ['bastion-prod', 'api-qa', 'frontend', 'elastic-search'];
+const Ids = [
+  'bastion-prod',
+  'api-qa',
+  'frontend',
+  'elastic-search',
+  'bastion-prod',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+];
 
 export default function Sidebar() {
   return (
-    <div className="sidebar mt-5">
+    <div className="sidebar pt-5">
       <div className="flex mx-3">
         <span className="flex-1">
           <button
@@ -67,24 +78,26 @@ export default function Sidebar() {
 
       <div className="mt-5">
         <span className="ml-4 font-bold text-sm">Connections</span>
-        {Ids.map((el) => (
-          <div key={el}>
-            <Link to={`/id/${el}`}>
-              <div className="inline dark:bg-gray-800 bg-opacity-95 border-opacity-60 | p-2 my-1 | flex justify-start cursor-pointer | hover:bg-gray-200 dark:hover:bg-grey-600 | transition-colors duration-500">
-                <div className="my-auto mx-2 w-10 h-10 flex justify-center items-center rounded-full bg-sky-700 text-md font-semibold text-white uppercase">
-                  {el[0]}
-                  {el[1]}
+        <ul className="overflow-y-scroll connections-list no-scrollbar">
+          {Ids.map((el) => (
+            <li key={el}>
+              <Link to={`/id/${el}`}>
+                <div className="inline dark:bg-gray-800 bg-opacity-95 border-opacity-60 | p-2 my-1 | flex justify-start cursor-pointer | hover:bg-gray-200 dark:hover:bg-grey-600 | transition-colors duration-500">
+                  <div className="my-auto mx-2 w-10 h-10 flex justify-center items-center rounded-md bg-sky-700 text-md font-semibold text-white uppercase">
+                    {el[0]}
+                    {el[1]}
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <span className="text-base text-gray-700 font-semibold">
+                      {el}
+                    </span>
+                    <span className="text-sm text-gray-500">192.168.0.1</span>
+                  </div>
                 </div>
-                <div className="flex flex-col justify-center">
-                  <span className="text-base text-gray-700 font-semibold">
-                    {el}
-                  </span>
-                  <span className="text-sm text-gray-500">192.168.0.1</span>
-                </div>
-              </div>
-            </Link>
-          </div>
-        ))}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
