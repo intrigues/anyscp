@@ -5,7 +5,25 @@ export default function CreateNewFunction() {
   return (
     <div className="sect">
       <div className="m-5">
-        <h1 className="text-4xl font-semibold">Server Name</h1>
+        <div className="flex">
+          <div className="flex-1">
+            <h1 className="inline text-4xl font-semibold">Server Name</h1>
+          </div>
+          <div className="justify-end">
+            <button
+              className="px-3 py-2 flex-1 bg-blue-500 font-semibold  text-white mx-1 rounded-md"
+              type="button"
+            >
+              Save
+            </button>
+            <button
+              className="px-3 py-2 flex-1 bg-red-500 font-semibold text-white ml-1 rounded-md"
+              type="button"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
         <div>
           <div className="block flex mt-5">
             <input
@@ -42,32 +60,21 @@ export default function CreateNewFunction() {
             />
           </div>
         </div>
-
-        <div className="flex mt-7">
-          <button
-            className="px-3 py-2 flex-1 bg-blue-500 font-semibold  text-white mr-1 rounded-md"
-            type="button"
-          >
-            Connect
-          </button>
-          <button
-            className="px-3 py-2 flex-1 bg-blue-500 font-semibold text-white mx-1 rounded-md"
-            type="button"
-          >
-            Test
-          </button>
-          <button
-            className="px-3 py-2 flex-1 bg-blue-500 font-semibold  text-white mx-1 rounded-md"
-            type="button"
-          >
-            Save
-          </button>
-          <button
-            className="px-3 py-2 flex-1 bg-red-500 font-semibold text-white ml-1 rounded-md"
-            type="button"
-          >
-            Delete
-          </button>
+        <div>
+          <div className="flex mt-7">
+            <button
+              className="mr-1 px-3 py-2 flex-1 bg-blue-500 font-semibold  text-white rounded-md"
+              type="button"
+            >
+              Connect
+            </button>
+            <button
+              className="ml-1 px-3 py-2 flex-1 bg-blue-500 font-semibold text-white rounded-md"
+              type="button"
+            >
+              Test
+            </button>
+          </div>
         </div>
       </div>
     </div>
