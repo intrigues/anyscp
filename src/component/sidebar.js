@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import 'tailwindcss/tailwind.css';
 import '../renderer/App.css';
+import { execSync } from 'child_process';
 
 const Ids = [
   'bastion-prod',
@@ -22,12 +23,14 @@ export default function Sidebar() {
     <div className="sidebar pt-5">
       <div className="flex mx-3">
         <span className="flex-1 mr-1">
-          <button
-            type="button"
-            className="px-5 py-2.5 font-medium bg-blue-100 hover:bg-blue-200 text-blue-500 rounded-lg text-sm font-semibold w-full"
-          >
-            Add
-          </button>
+          <Link to="/createNew">
+            <button
+              type="button"
+              className="px-5 py-2.5 font-medium bg-blue-100 hover:bg-blue-200 text-blue-500 rounded-lg text-sm font-semibold w-full"
+            >
+              Add
+            </button>
+          </Link>
         </span>
 
         <span className="flex-1 ml-1">
