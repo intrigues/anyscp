@@ -17,19 +17,20 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
-function run_command_win32() {
-  const child_process = require('child_process');
-  child_process.exec('start cmd.exe')
+function runCommandWin32() {
+  const childProcess = require('child_process');
+  childProcess.exec('start cmd.exe');
 }
 
-function run_command_darwin() {
-  const child_process = require('child_process');
-  child_process.exec('open -a Terminal.app')
+function runCommandDarwin() {
+  const childProcess = require('child_process');
+  const cmdString = `osascript -e 'tell application "Terminal"' -e 'set newTab to do script ("ls")' -e 'end tell'`;
+  childProcess.exec(cmdString);
 }
 
-function run_command_linux() {
-  const child_process = require('child_process');
-  child_process.exec('gnome-terminal')
+function runCommandLinux() {
+  const childProcess = require('child_process');
+  childProcess.exec('gnome-terminal');
 }
 
 export default class AppUpdater {
@@ -49,26 +50,25 @@ ipcMain.on('ipc-example', async (event, arg) => {
 });
 
 ipcMain.on('command', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong} on ${process.platform}`;
+  const msgTemplate = (pingPong: string) =>
+    `IPC test: ${pingPong} on ${process.platform}`;
   console.log(msgTemplate(arg));
 
   switch (process.platform) {
     case 'win32':
-      run_command_win32();
+      runCommandWin32();
       break;
     case 'darwin':
-      run_command_darwin();
+      runCommandDarwin();
       break;
     case 'linux':
-      run_command_linux();
+      runCommandLinux();
       break;
     default:
       console.log('Unknown platform');
   }
   event.reply('command', msgTemplate('pong'));
 });
-
-
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -116,7 +116,7 @@ const createWindow = async () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
     },
   });
 
