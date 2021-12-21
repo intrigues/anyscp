@@ -17,6 +17,21 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+function run_command_win32() {
+  const child_process = require('child_process');
+  child_process.exec('start cmd.exe')
+}
+
+function run_command_darwin() {
+  const child_process = require('child_process');
+  child_process.exec('open -a Terminal.app')
+}
+
+function run_command_linux() {
+  const child_process = require('child_process');
+  child_process.exec('gnome-terminal')
+}
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -32,6 +47,28 @@ ipcMain.on('ipc-example', async (event, arg) => {
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
 });
+
+ipcMain.on('command', async (event, arg) => {
+  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong} on ${process.platform}`;
+  console.log(msgTemplate(arg));
+
+  switch (process.platform) {
+    case 'win32':
+      run_command_win32();
+      break;
+    case 'darwin':
+      run_command_darwin();
+      break;
+    case 'linux':
+      run_command_linux();
+      break;
+    default:
+      console.log('Unknown platform');
+  }
+  event.reply('command', msgTemplate('pong'));
+});
+
+
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -78,6 +115,8 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false
     },
   });
 
