@@ -17,6 +17,10 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('dev.sqlite3');
+
+
 function runCommandWin32() {
   const childProcess = require('child_process');
   childProcess.exec('start cmd.exe');
@@ -69,6 +73,13 @@ ipcMain.on('command', async (event, arg) => {
   }
   event.reply('command', msgTemplate('pong'));
 });
+
+ipcMain.on('add-connection', async(event, arg) => {
+  const stmt = db.prepare('INSERT INTO connections (name, ip, password, keypath, provider) VALUES (?, ?, ?, ?, ?)');
+  const info = stmt.run(arg['name'], arg['ip'], arg['password'], arg['keypath'], arg['provider']);
+  console.log(info.changes)
+  event.reply('connection-fetch', [1,2,34,5,5])
+})
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');

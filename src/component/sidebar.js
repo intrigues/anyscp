@@ -4,8 +4,12 @@ import { Link } from 'react-router-dom';
 import 'tailwindcss/tailwind.css';
 import '../renderer/App.css';
 import { execSync } from 'child_process';
+import { Clock } from './clock';
+import { ConnectionList } from './connectionRow';
 
-const Ids = [
+const { ipcRenderer } = window.require('electron');
+
+var Ids = [
   'bastion-prod',
   'api-qa',
   'frontend',
@@ -17,6 +21,12 @@ const Ids = [
   '4',
   '5',
 ];
+
+ipcRenderer.on("connection-fetch", (event, arg) => {
+  console.log(arg);
+  Ids = arg
+});
+
 
 export default function Sidebar() {
   return (
@@ -42,7 +52,7 @@ export default function Sidebar() {
           </button>
         </span>
       </div>
-
+      <ConnectionList/>
       <div className="w-full px-3 mt-4">
         <input
           className="appearance-none block w-full bg-gray-50 text-gray-700 border rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none"
