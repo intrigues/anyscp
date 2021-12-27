@@ -78,7 +78,7 @@ ipcMain.on('add-connection', async(event, arg) => {
   const stmt = db.prepare('INSERT INTO connections (name, ip, password, keypath, provider) VALUES (?, ?, ?, ?, ?)');
   const info = stmt.run(arg['name'], arg['ip'], arg['password'], arg['keypath'], arg['provider']);
   console.log(info.changes)
-  event.reply('connection-fetch', [1,2,34,5,5])
+  event.reply('connection-fetch', arg['name'])
 })
 
 if (process.env.NODE_ENV === 'production') {

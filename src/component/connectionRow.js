@@ -3,38 +3,38 @@ const { ipcRenderer } = window.require('electron');
 import React from 'react';
 
 export class ConnectionList extends React.Component {
+  _isMounted = false;
   constructor(props) {
     super(props)
-    this.state = [1,2,3];
+    this.state = {
+      "data": [],
+    };
   }
 
   componentDidMount() {
     ipcRenderer.on("connection-fetch", (event, arg) => {
-      console.log(arg);
-      this.updateConnectionList()
+      console.log("hello", arg);
+      this.updateConnectionList(arg);
+    });
+  }
+  
+  updateConnectionList(arg) { 
+    this.setState({
+      "data": [...this.state.data, arg],
     });
   }
 
-  updateConnectionList() {
-    var newState = this.state
-    console.log("1init", this.state)
-    var dummy = [...this.state, [5]]
-    console.log("1init---", dummy)
-    this.setState(
-      dummy
-    );
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   render() {
     return (
       <div>
-      {this.state.map((conn) => (
+      {this.state.data.map((conn) => (
         <li>{conn}</li>
       ))}
       </div>
     );
   }
-
-
-
 }
