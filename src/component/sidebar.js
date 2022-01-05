@@ -5,7 +5,7 @@ import 'tailwindcss/tailwind.css';
 import '../renderer/App.css';
 import { execSync } from 'child_process';
 import { Clock } from './clock';
-import { ConnectionList } from './connectionRow';
+import { ConnectionRow } from './connectionRow';
 
 const { ipcRenderer } = window.require('electron');
 
@@ -18,7 +18,6 @@ export default class Sidebar extends React.Component {
 
   componentDidMount() {
     ipcRenderer.on("fetch-connection-res", (event, arg) => {
-      console.log('event catched in fetch res:-> ' + arg[1]);
       this.fetchConnection(arg)
     });
   }
@@ -66,21 +65,8 @@ export default class Sidebar extends React.Component {
           <span className="ml-4 font-bold text-sm">Connections</span>
           <ul className="overflow-y-scroll connections-list no-scrollbar">
             {this.state.data.map((el) => (
-              <li key={el}>
-                <Link to={`/id/${el}`}>
-                  <div className="inline dark:bg-gray-800 bg-opacity-95 border-opacity-60 | p-2 my-1 | flex justify-start cursor-pointer | hover:bg-gray-200 dark:hover:bg-grey-600 | transition-colors duration-500">
-                    <div className="my-auto mx-2 w-10 h-10 flex justify-center items-center rounded-md bg-cyan-50 text-md font-semibold text-black uppercase">
-                      {el.name[0]}
-                      {el.name[1]}
-                    </div>
-                    <div className="flex flex-col justify-center">
-                      <span className="text-base text-gray-700 font-semibold">
-                        {el.name}
-                      </span>
-                      <span className="text-sm text-gray-500">{el.ip}</span>
-                    </div>
-                  </div>
-                </Link>
+              <li key={el.name}>
+                <ConnectionRow data={el}/>
               </li>
             ))}
           </ul>
