@@ -31,9 +31,9 @@ ipcMain.on('add-connection', async(event, arg) => {
 ipcMain.on('fetch-connection-req', async(event, arg) => {
   let result: any[];
   result = [];
-  db.each("SELECT name, ip FROM connections", function(err: unknown, row: { name: string, ip: string; }) {
+  db.each("SELECT id, name, ip FROM connections", function(err: unknown, row: { id :number, name: string, ip: string; }) {
     if (row.name != "" && row.name && row.ip != "" && row.ip) {
-      result.push({"ip": row.ip, "name": row.name});
+      result.push({"id": row.id, "ip": row.ip, "name": row.name});
     }
     if (err) {
       throw err;
