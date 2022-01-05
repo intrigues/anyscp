@@ -81,6 +81,24 @@ ipcMain.on('add-connection', async(event, arg) => {
   event.reply('connection-fetch', [1,2,34,5,5])
 })
 
+ipcMain.on('fetch-connection-req', async(event, arg) => {
+  let result: any[];
+  result = [];
+  db.each("SELECT name, ip FROM connections", function(err: unknown, row: { name: string, ip: string; }) {
+    if (row.name != "" && row.name && row.ip != "" && row.ip) {
+      result.push({"ip": row.ip, "name": row.name});
+    }
+    if (err) {
+      throw err;
+    }
+  });
+  await new Promise(f => setTimeout(f, 1000));
+  console.log(arg.info);
+  console.log("result-->" + result);
+  event.reply('fetch-connection-res', result);
+})
+
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

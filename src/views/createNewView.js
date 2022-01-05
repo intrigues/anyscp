@@ -18,8 +18,9 @@ function addConnection() {
     password: password,
     file: file
   }
-  console.log("--->", connectionData)
+  // console.log("--->", connectionData)
   ipcRenderer.send('add-connection', connectionData);
+  ipcRenderer.send('fetch-connection-req', '');
 }
 
 export default function CreateNewFunction() {

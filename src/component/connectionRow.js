@@ -4,31 +4,27 @@ import React from 'react';
 
 export class ConnectionList extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = [1,2,3];
+    super(props);
+    this.state = {data:[]};
   }
 
   componentDidMount() {
     ipcRenderer.on("connection-fetch", (event, arg) => {
       console.log(arg);
-      this.updateConnectionList()
+      this.updateConnectionList();
     });
   }
 
   updateConnectionList() {
-    var newState = this.state
-    console.log("1init", this.state)
-    var dummy = [...this.state, [5]]
-    console.log("1init---", dummy)
     this.setState(
-      dummy
+      {data: [1,2,3,4]},
     );
   }
 
   render() {
     return (
       <div>
-      {this.state.map((conn) => (
+      {this.state.data.map((conn) => (
         <li>{conn}</li>
       ))}
       </div>
