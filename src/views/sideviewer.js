@@ -9,7 +9,7 @@ const { ipcRenderer } = window.require('electron');
 function openCommandPrompt() {
   // eslint-disable-next-line no-console
   console.log('function executed');
-  ipcRenderer.send('command', 'hello');
+  ipcRenderer.send('open-teminal', '');
 }
 
 export default function Index(props) {

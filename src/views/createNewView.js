@@ -20,7 +20,6 @@ function addConnection() {
   }
   // console.log("--->", connectionData)
   ipcRenderer.send('add-connection', connectionData);
-  ipcRenderer.send('fetch-connection-req', '');
 }
 
 export default function CreateNewFunction() {

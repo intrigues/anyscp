@@ -25,7 +25,7 @@ export default class Sidebar extends React.Component {
 
   fetchConnection(arg) {
     this.setState(
-      {data: arg}
+      { data: arg }
     )
   }
 
