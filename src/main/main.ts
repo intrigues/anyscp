@@ -29,6 +29,7 @@ ipcMain.on('add-connection', async(event, arg) => {
 })
 
 ipcMain.on('fetch-connection-req', async(event, arg) => {
+  console.log("requested to reload")
   let result: any[];
   result = [];
   db.each("SELECT id, name, ip FROM connections", function(err: unknown, row: { id :number, name: string, ip: string; }) {
@@ -39,9 +40,20 @@ ipcMain.on('fetch-connection-req', async(event, arg) => {
       throw err;
     }
   });
-  await new Promise(f => setTimeout(f, 1000));
-  console.log(arg.info);
+  await new Promise(f => setTimeout(f, 50));
   event.reply('fetch-connection-res', result);
+
+  console.log(arg.info);
+})
+
+ipcMain.on("delete-connection", async (event, arg) => {
+  await db.run(`DELETE FROM connections WHERE id=?`, arg, function(err:any) {
+    if (err) {
+      return console.error(err.message);
+    }
+  });
+  event.reply('fetch-connection-req', '');
+  console.log(arg.info)
 })
 
 
