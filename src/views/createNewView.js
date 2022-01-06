@@ -18,7 +18,7 @@ function addConnection() {
     password: password,
     file: file
   }
-  console.log("--->", connectionData)
+  // console.log("--->", connectionData)
   ipcRenderer.send('add-connection', connectionData);
 }
 
@@ -32,7 +32,7 @@ export default function CreateNewFunction() {
           </div>
           <div className="justify-end">
             <button
-              className="px-3 py-2 flex-1 bg-blue-500 font-semibold  text-white mx-1 rounded-md"
+              className="px-3 py-2 flex-1 bg-blue-800 font-semibold  text-white mx-1 rounded-md"
               type="button"
               onClick={addConnection}
             >

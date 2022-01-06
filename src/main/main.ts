@@ -21,6 +21,52 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('dev.sqlite3');
 
 
+ipcMain.on('add-connection', async(event, arg) => {
+  const stmt = db.prepare('INSERT INTO connections (name, ip, password, keypath, provider) VALUES (?, ?, ?, ?, ?)');
+  stmt.run(arg['name'], arg['ip'], arg['password'], arg['keypath'], arg['provider']);
+  console.log(event.processId);
+  event.reply('fetch-connection-req', '');
+})
+
+ipcMain.on('fetch-connection-req', async(event, arg) => {
+  let result: any[];
+  result = [];
+  db.each("SELECT id, name, ip FROM connections", function(err: unknown, row: { id :number, name: string, ip: string; }) {
+    if (row.name != "" && row.name && row.ip != "" && row.ip) {
+      result.push({"id": row.id, "ip": row.ip, "name": row.name});
+    }
+    if (err) {
+      throw err;
+    }
+  });
+  await new Promise(f => setTimeout(f, 1000));
+  console.log(arg.info);
+  event.reply('fetch-connection-res', result);
+})
+
+
+// opens terminal depending upon the operating system
+ipcMain.on('open-teminal', async (event, arg) => {
+  const msgTemplate = (pingPong: string) =>
+    `IPC test: ${pingPong} on ${process.platform}`;
+  console.log(msgTemplate(arg));
+
+  switch (process.platform) {
+    case 'win32':
+      runCommandWin32();
+      break;
+    case 'darwin':
+      runCommandDarwin();
+      break;
+    case 'linux':
+      runCommandLinux();
+      break;
+    default:
+      console.log('Unknown platform');
+  }
+  event.reply('command', msgTemplate('pong'));
+});
+
 function runCommandWin32() {
   const childProcess = require('child_process');
   childProcess.exec('start cmd.exe');
@@ -46,40 +92,6 @@ export default class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
-
-ipcMain.on('command', async (event, arg) => {
-  const msgTemplate = (pingPong: string) =>
-    `IPC test: ${pingPong} on ${process.platform}`;
-  console.log(msgTemplate(arg));
-
-  switch (process.platform) {
-    case 'win32':
-      runCommandWin32();
-      break;
-    case 'darwin':
-      runCommandDarwin();
-      break;
-    case 'linux':
-      runCommandLinux();
-      break;
-    default:
-      console.log('Unknown platform');
-  }
-  event.reply('command', msgTemplate('pong'));
-});
-
-ipcMain.on('add-connection', async(event, arg) => {
-  const stmt = db.prepare('INSERT INTO connections (name, ip, password, keypath, provider) VALUES (?, ?, ?, ?, ?)');
-  const info = stmt.run(arg['name'], arg['ip'], arg['password'], arg['keypath'], arg['provider']);
-  console.log(info.changes)
-  event.reply('connection-fetch', arg['name'])
-})
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
