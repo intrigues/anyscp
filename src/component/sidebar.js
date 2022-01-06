@@ -36,7 +36,7 @@ export default class Sidebar extends React.Component {
             <Link to="/createNew">
               <button
                 type="button"
-                className="px-5 py-2.5 font-medium bg-blue-100 hover:bg-blue-200 text-blue-500 rounded-lg text-sm font-semibold w-full"
+                className="px-1 py-1.5 font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm w-full"
               >
                 Add
               </button>
@@ -46,7 +46,7 @@ export default class Sidebar extends React.Component {
           <span className="flex-1 ml-1">
             <button
               type="button"
-              className="px-5 py-2.5 font-medium bg-blue-100 hover:bg-blue-200 text-blue-500 rounded-lg text-sm font-semibold w-full"
+              className="px-1 py-1.5 font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm w-full"
             >
               Import
             </button>
