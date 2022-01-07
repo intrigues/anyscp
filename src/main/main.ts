@@ -47,7 +47,7 @@ ipcMain.on('fetch-connection-req', async(event, arg) => {
 })
 
 ipcMain.on("update-connection", async (event, arg) => {
-  await db.run(`UPDATE connections SET name=?, ip=?, port=?, username=?, password=?, keypath=? WHERE id=?`, [arg["name"], arg["ip"], arg["port"], arg["username"], arg["password"], ], function(err:any) {
+  await db.run(`UPDATE connections SET name=?, ip=?, port=?, username=?, password=?, keypath=? WHERE id=?`, [arg["name"], arg["ip"], arg["port"], arg["username"], arg["password"], arg["keypath"], arg["id"] ], function(err:any) {
     if (err) {
       return console.error(err.message);
     }

@@ -7,7 +7,7 @@ import { throws } from 'assert/strict';
 export default class ConnectionDetailsView extends React.Component {
   constructor(props) {
     super(props);
-    this.addConnection = this.addConnection.bind(this);
+    this.updateConnection = this.updateConnection.bind(this);
     this.state = {
       name: "",
       ip: "",
@@ -19,22 +19,21 @@ export default class ConnectionDetailsView extends React.Component {
 
   componentDidMount() {
     console.log(this.props.match.params);
-    // connectionDetail = {}
     (async () => {
         const result = await ipcRenderer.invoke('fetch-connection', this.props.match.params.id);
-        console.log(result); // prints "foo"
         this.setState({
-          name: this.state.name,
-          ip: this.state.ip,
-          port: this.state.port,
-          username: this.state.username,
-          password: this.state.password,
+          name: result.name,
+          ip: result.ip,
+          port: result.port,
+          username: result.username,
+          password: result.password,
         })
     })();
   }
 
-  addConnection() {
-    connectionData = {
+  updateConnection() {
+    const connectionData = {
+      id: this.props.match.params.id,
       name: this.state.name,
       ip: this.state.ip,
       port: this.state.port,
@@ -106,7 +105,7 @@ export default class ConnectionDetailsView extends React.Component {
                   Password
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" type="password" name="password" id="password" onChange={this.onChange} value={this.state.passwords}/>
+                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" type="password" name="password" id="password" onChange={this.onChange} value={this.state.password}/>
                 </dd>
               </div>
               <div class="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -136,7 +135,7 @@ export default class ConnectionDetailsView extends React.Component {
               </div>
               <div class="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="my-auto text-sm font-medium text-gray-500">
-                <button onClick={this.updateConnection} class="inline-flex items-center justify-center mr-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700">
+                <button class="inline-flex items-center justify-center mr-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700">
                   Connect
                 </button>
                 </dt>
@@ -145,9 +144,9 @@ export default class ConnectionDetailsView extends React.Component {
                 <a href="#" class="inline-flex items-center justify-center ml-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
                   Test Connectivity
                 </a>
-                <a href="#" class="inline-flex items-center justify-center ml-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                <button onClick={this.updateConnection} class="inline-flex items-center justify-center ml-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
                   Save
-                </a>
+                </button>
                 </div>
 
                 </dd>
