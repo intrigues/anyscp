@@ -33,6 +33,16 @@ export default class ConnectionDetailsView extends React.Component {
     })();
   }
 
+  openCommandPrompt = () => {
+    const connectionData = {
+      ip: this.state.ip,
+      port: this.state.port,
+      username: this.state.username,
+      password: this.state.password,
+    }
+    ipcRenderer.send('open-teminal', connectionData);
+  }
+
   updateConnection() {
     const connectionData = {
       id: this.props.match.params.id,
@@ -138,7 +148,7 @@ export default class ConnectionDetailsView extends React.Component {
               </div>
               <div class="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="my-auto text-sm font-medium text-gray-500">
-                <button class="inline-flex items-center justify-center mr-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700">
+                <button onClick={this.openCommandPrompt} class="inline-flex items-center justify-center mr-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700">
                   Connect
                 </button>
                 </dt>

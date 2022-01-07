@@ -84,13 +84,9 @@ ipcMain.handle('fetch-connection', async (event, arg) => {
 
 // opens terminal depending upon the operating system
 ipcMain.on('open-teminal', async (event, arg) => {
-  const msgTemplate = (pingPong: string) =>
-    `IPC test: ${pingPong} on ${process.platform}`;
-  console.log(msgTemplate(arg));
-
   switch (process.platform) {
     case 'win32':
-      runCommandWin32();
+      runCommandWin32(arg);
       break;
     case 'darwin':
       runCommandDarwin();
@@ -101,12 +97,13 @@ ipcMain.on('open-teminal', async (event, arg) => {
     default:
       console.log('Unknown platform');
   }
-  event.reply('command', msgTemplate('pong'));
+  console.log(event.processId)
 });
 
-function runCommandWin32() {
+function runCommandWin32(arg:any) {
   const childProcess = require('child_process');
-  childProcess.exec('start cmd.exe');
+  const sshCommand = 'start cmd.exe /k ssh ' + arg["username"] + "@" + arg["ip"] + " -p" + arg["port"]  ;
+  childProcess.exec(sshCommand);
 }
 
 function runCommandDarwin() {
