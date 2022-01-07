@@ -14,6 +14,7 @@ export default class CreateNewConnectionView extends React.Component {
       port: "",
       username: "",
       password: "",
+      keyfilepath: "",
     }
   }
 
@@ -39,6 +40,14 @@ export default class CreateNewConnectionView extends React.Component {
     this.setState(
       {newState}
     )
+  }
+
+  getPath = (e) => {
+    if (e.target.files.length > 0) {
+      this.setState({
+        keyfilepath: e.target.files[0].path
+      })
+    }
   }
 
   render() {
@@ -110,14 +119,16 @@ export default class CreateNewConnectionView extends React.Component {
                           <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
                         </svg>
                         <span class="ml-2 flex-1 w-0 truncate">
-                          secretfile.pem
+                          {this.state.keyfilepath}
                         </span>
                       </div>
                       <div class="ml-4 flex-shrink-0">
-                        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-                          Choose
-                        </a>
+                        <label class="custom-file-upload">
+                          <input type="file" onChange={this.getPath}/>
+                            Custom Upload
+                          </label>
                       </div>
+
                     </li>
                   </ul>
                 </dd>

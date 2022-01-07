@@ -22,8 +22,8 @@ const db = new sqlite3.Database('dev.sqlite3');
 
 
 ipcMain.on('add-connection', async(event, arg) => {
-  const stmt = db.prepare('INSERT INTO connections (name, ip, password, keypath, provider) VALUES (?, ?, ?, ?, ?)');
-  stmt.run(arg['name'], arg['ip'], arg['password'], arg['keypath'], arg['provider']);
+  const stmt = db.prepare('INSERT INTO connections (name, ip, port, username, password, keypath) VALUES (?, ?, ?, ?, ?, ?)');
+  stmt.run(arg['name'], arg['ip'], arg['port'], arg['username'], arg['password'], arg['keypath']);
   console.log(event.processId);
   event.reply('fetch-connection-req', '');
 })
@@ -46,6 +46,16 @@ ipcMain.on('fetch-connection-req', async(event, arg) => {
   console.log(arg.info);
 })
 
+ipcMain.on("update-connection", async (event, arg) => {
+  await db.run(`UPDATE connections SET name=?, ip=?, port=?, username=?, password=?, keypath=? WHERE id=?`, [arg["name"], arg["ip"], arg["port"], arg["username"], arg["password"], ], function(err:any) {
+    if (err) {
+      return console.error(err.message);
+    }
+  });
+  event.reply('fetch-connection-req', '');
+  console.log(arg.info)
+})
+
 ipcMain.on("delete-connection", async (event, arg) => {
   await db.run(`DELETE FROM connections WHERE id=?`, arg, function(err:any) {
     if (err) {
@@ -55,6 +65,21 @@ ipcMain.on("delete-connection", async (event, arg) => {
   event.reply('fetch-connection-req', '');
   console.log(arg.info)
 })
+
+ipcMain.handle('fetch-connection', async (event, arg) => {
+  console.log("fetch connection for : ", arg);
+  let connectionDetail: any[];
+  connectionDetail = [];
+  await db.get("SELECT id, name, ip, port, username, password FROM connections WHERE id=?", arg, function(err:any, data:any) {
+    if (err) {
+      return console.error(err.message);
+    }
+    connectionDetail = data
+  });
+  await new Promise(f => setTimeout(f, 50));
+  console.log("event.processId: ", event.processId);
+  return connectionDetail;
+});
 
 
 // opens terminal depending upon the operating system

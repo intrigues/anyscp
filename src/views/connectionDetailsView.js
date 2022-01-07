@@ -19,7 +19,18 @@ export default class ConnectionDetailsView extends React.Component {
 
   componentDidMount() {
     console.log(this.props.match.params);
-
+    // connectionDetail = {}
+    (async () => {
+        const result = await ipcRenderer.invoke('fetch-connection', this.props.match.params.id);
+        console.log(result); // prints "foo"
+        this.setState({
+          name: this.state.name,
+          ip: this.state.ip,
+          port: this.state.port,
+          username: this.state.username,
+          password: this.state.password,
+        })
+    })();
   }
 
   addConnection() {
@@ -30,7 +41,7 @@ export default class ConnectionDetailsView extends React.Component {
       username: this.state.username,
       password: this.state.password,
     }
-    ipcRenderer.send('add-connection', connectionData);
+    ipcRenderer.send('update-connection', connectionData);
     ipcRenderer.send('fetch-connection-req', '');
   }
 

@@ -6,9 +6,10 @@ export async function up(knex: Knex): Promise<void> {
     table.increments();
     table.string('name');
     table.string('ip');
+    table.string('port');
+    table.string('username');
     table.string('password');
     table.string('keypath');
-    table.string('provider');
     table.timestamps();
   })
 }
