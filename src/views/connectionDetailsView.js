@@ -14,6 +14,7 @@ export default class ConnectionDetailsView extends React.Component {
       port: "",
       username: "",
       password: "",
+      keypath: "",
     }
   }
 
@@ -27,6 +28,7 @@ export default class ConnectionDetailsView extends React.Component {
           port: result.port,
           username: result.username,
           password: result.password,
+          keypath: result.keypath,
         })
     })();
   }
@@ -39,6 +41,7 @@ export default class ConnectionDetailsView extends React.Component {
       port: this.state.port,
       username: this.state.username,
       password: this.state.password,
+      keypath: this.state.keypath,
     }
     ipcRenderer.send('update-connection', connectionData);
     ipcRenderer.send('fetch-connection-req', '');
@@ -121,7 +124,7 @@ export default class ConnectionDetailsView extends React.Component {
                           <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
                         </svg>
                         <span class="ml-2 flex-1 w-0 truncate">
-                          secretfile.pem
+                          {this.state.keypath}
                         </span>
                       </div>
                       <div class="ml-4 flex-shrink-0">

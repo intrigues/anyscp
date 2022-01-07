@@ -22,8 +22,8 @@ const db = new sqlite3.Database('dev.sqlite3');
 
 
 ipcMain.on('add-connection', async(event, arg) => {
-  const stmt = db.prepare('INSERT INTO connections (name, ip, port, username, password, keypath) VALUES (?, ?, ?, ?, ?, ?)');
-  stmt.run(arg['name'], arg['ip'], arg['port'], arg['username'], arg['password'], arg['keypath']);
+  const stmt = db.prepare('INSERT INTO connections (name, ip, port, username, password, keypath, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)');
+  stmt.run(arg['name'], arg['ip'], arg['port'], arg['username'], arg['password'], arg['keypath'], new Date());
   console.log(event.processId);
   event.reply('fetch-connection-req', '');
 })
@@ -47,7 +47,7 @@ ipcMain.on('fetch-connection-req', async(event, arg) => {
 })
 
 ipcMain.on("update-connection", async (event, arg) => {
-  await db.run(`UPDATE connections SET name=?, ip=?, port=?, username=?, password=?, keypath=? WHERE id=?`, [arg["name"], arg["ip"], arg["port"], arg["username"], arg["password"], arg["keypath"], arg["id"] ], function(err:any) {
+  await db.run(`UPDATE connections SET name=?, ip=?, port=?, username=?, password=?, keypath=?, updated_at=? WHERE id=?`, [arg["name"], arg["ip"], arg["port"], arg["username"], arg["password"], arg["keypath"], new Date()], function(err:any) {
     if (err) {
       return console.error(err.message);
     }
@@ -70,7 +70,7 @@ ipcMain.handle('fetch-connection', async (event, arg) => {
   console.log("fetch connection for : ", arg);
   let connectionDetail: any[];
   connectionDetail = [];
-  await db.get("SELECT id, name, ip, port, username, password FROM connections WHERE id=?", arg, function(err:any, data:any) {
+  await db.get("SELECT id, name, ip, port, username, password, keypath FROM connections WHERE id=?", arg, function(err:any, data:any) {
     if (err) {
       return console.error(err.message);
     }

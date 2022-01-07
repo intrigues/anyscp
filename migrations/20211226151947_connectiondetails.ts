@@ -6,7 +6,7 @@ export async function up(knex: Knex): Promise<void> {
     table.increments();
     table.string('name');
     table.string('ip');
-    table.string('port');
+    table.integer('port', 5);
     table.string('username');
     table.string('password');
     table.string('keypath');
