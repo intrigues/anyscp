@@ -86,7 +86,7 @@ ipcMain.handle('fetch-connection', async (event, arg) => {
 ipcMain.on('open-teminal', async (event, arg) => {
   switch (process.platform) {
     case 'win32':
-      runCommandWin32(arg);
+     runCommandWin32(arg);
       break;
     case 'darwin':
       runCommandDarwin();
@@ -102,7 +102,7 @@ ipcMain.on('open-teminal', async (event, arg) => {
 
 function runCommandWin32(arg:any) {
   const childProcess = require('child_process');
-  const sshCommand = 'start cmd.exe /k ssh ' + arg["username"] + "@" + arg["ip"] + " -p" + arg["port"]  ;
+  const sshCommand = 'start cmd.exec /k ssh ' + arg["username"] + ':' + arg["password"] + '@' + arg["ip"] + ' -p '+ arg["port"];
   childProcess.exec(sshCommand);
 }
 
