@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import 'tailwindcss/tailwind.css';
 import '../renderer/App.css';
 import { execSync } from 'child_process';
@@ -10,7 +10,7 @@ import { ConnectionRow } from './connectionRow';
 
 const { ipcRenderer } = window.require('electron');
 
-export default class Sidebar extends React.Component {
+class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     ipcRenderer.send('fetch-connection-req', '');
@@ -27,6 +27,10 @@ export default class Sidebar extends React.Component {
     this.setState(
       { data: arg }
     )
+  }
+
+  onclick = (id) => {
+    this.props.history.push(`/id/${id}`);
   }
 
   render() {
@@ -46,7 +50,7 @@ export default class Sidebar extends React.Component {
           <ul className="overflow-y-scroll connections-list no-scrollbar">
             {this.state.data.map((el) => (
               <li key={el.name}>
-                <ConnectionRow data={el}/>
+                <ConnectionRow onclick={this.onclick} data={el}/>
               </li>
             ))}
           </ul>
@@ -70,3 +74,5 @@ export default class Sidebar extends React.Component {
   }
 
 }
+
+export default withRouter (Sidebar)

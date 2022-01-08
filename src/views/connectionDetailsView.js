@@ -37,6 +37,23 @@ export default class ConnectionDetailsView extends React.Component {
     })();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps);
+    if (prevProps.match.params.id !== this.props.match.params.id) {
+      (async () => {
+        const result = await ipcRenderer.invoke('fetch-connection', this.props.match.params.id);
+        this.setState({
+          name: result.name,
+          ip: result.ip,
+          port: result.port,
+          username: result.username,
+          password: result.password,
+          keypath: result.keypath,
+          })
+      })();
+    }
+  }
+
   openCommandPrompt = () => {
     const connectionData = {
       ip: this.state.ip,
@@ -65,25 +82,25 @@ export default class ConnectionDetailsView extends React.Component {
     event.preventDefault();
     const { name, value } = event.target;
     let errors = this.state.errors;
-    
+
     const validDNSRegex = RegExp(/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/i);
     const validIpAddressRegex = RegExp(/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/i);
 
     switch (name) {
-      case 'name': 
-        errors.name = 
+      case 'name':
+        errors.name =
           value.length < 1
             ? 'please enter name'
             : '';
         break;
-      case 'ip': 
-        errors.ip = 
+      case 'ip':
+        errors.ip =
           validDNSRegex.test(value) || validIpAddressRegex.test(value)
             ? ''
             : 'host name/ip invalid';
         break;
-      case 'port': 
-        errors.port = 
+      case 'port':
+        errors.port =
           value.length < 1 || value.length > 5
             ? 'invalid port'
             : '';
@@ -116,7 +133,7 @@ export default class ConnectionDetailsView extends React.Component {
       })
     }
   }
-  
+
   render() {
     return (
       <div className="sect">

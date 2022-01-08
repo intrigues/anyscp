@@ -45,25 +45,25 @@ export default class CreateNewConnectionView extends React.Component {
     event.preventDefault();
     const { name, value } = event.target;
     let errors = this.state.errors;
-    
+
     const validDNSRegex = RegExp(/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/i);
     const validIpAddressRegex = RegExp(/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/i);
 
     switch (name) {
-      case 'name': 
-        errors.name = 
+      case 'name':
+        errors.name =
           value.length < 1
             ? 'please enter name'
             : '';
         break;
-      case 'ip': 
-        errors.ip = 
+      case 'ip':
+        errors.ip =
           validDNSRegex.test(value) || validIpAddressRegex.test(value)
             ? ''
             : 'host name/ip invalid';
         break;
-      case 'port': 
-        errors.port = 
+      case 'port':
+        errors.port =
           value.length < 1 || value.length > 5
             ? 'invalid port'
             : '';
@@ -79,7 +79,7 @@ export default class CreateNewConnectionView extends React.Component {
     }
     this.setState({errors, [name]: value});
   }
-  
+
   onChange = (e) => {
     let newState = this.state;
     this.handleChange(e);
@@ -171,7 +171,7 @@ export default class CreateNewConnectionView extends React.Component {
                               if (this.state.keypath) {
                                 return this.state.keypath
                               } else {
-                                return 'no file selected'
+                                return 'No File Selected'
                               }
                             })()}
                         </span>
