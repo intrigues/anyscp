@@ -20,14 +20,14 @@ export class ConnectionRow extends React.Component {
 
   render() {
     return (
-      <Link to={`/id/${this.props.data.id}`}>
+      <div>
         <div className="p-2 my-1 | flex justify-start cursor-pointer | hover:bg-gray-200 dark:hover:bg-grey-600 | transition-colors duration-200">
-        <div className="my-auto mx-2 w-10 h-10 flex justify-center shadow-sm border items-center rounded-md text-md font-semibold text-black uppercase">
+        <div onClick={() => this.props.onclick(this.props.data.id)} className="my-auto px-2 mx-2 w-10 h-10 flex justify-center shadow-sm border items-center rounded-md text-md font-semibold text-black uppercase">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
           </svg>
         </div>
-        <div className="flex flex-col justify-center">
+        <div onClick={() => this.props.onclick(this.props.data.id)} className="flex flex-col justify-center w-full">
           <span className="text-sm text-gray-700 font-semibold">
             {this.props.data.name}
           </span>
@@ -42,7 +42,7 @@ export class ConnectionRow extends React.Component {
           </button>
         </div>
       </div>
-      </Link>
+      </div>
     );
   }
 }

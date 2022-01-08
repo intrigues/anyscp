@@ -86,13 +86,13 @@ ipcMain.handle('fetch-connection', async (event, arg) => {
 ipcMain.on('open-teminal', async (event, arg) => {
   switch (process.platform) {
     case 'win32':
-      runCommandWin32(arg);
+     runCommandWin32(arg);
       break;
     case 'darwin':
-      runCommandDarwin();
+      runCommandDarwin(arg);
       break;
     case 'linux':
-      runCommandLinux();
+      runCommandLinux(arg);
       break;
     default:
       console.log('Unknown platform');
@@ -102,19 +102,21 @@ ipcMain.on('open-teminal', async (event, arg) => {
 
 function runCommandWin32(arg:any) {
   const childProcess = require('child_process');
-  const sshCommand = 'start cmd.exe /k ssh ' + arg["username"] + "@" + arg["ip"] + " -p" + arg["port"]  ;
+  const sshCommand = 'start cmd.exe /k ssh ' + arg["username"] + ':' + arg["password"] + '@' + arg["ip"] + ' -p '+ arg["port"];
   childProcess.exec(sshCommand);
 }
 
-function runCommandDarwin() {
+function runCommandDarwin(arg:any) {
   const childProcess = require('child_process');
-  const cmdString = `osascript -e 'tell application "Terminal"' -e 'set newTab to do script ("ls")' -e 'end tell'`;
+  const sshCommand = 'ssh ' + arg["username"] + ':' + arg["password"] + '@' + arg["ip"] + ' -p '+ arg["port"];
+  const cmdString = `osascript -e 'tell application "Terminal"' -e 'set newTab to do script ("` + sshCommand + `")' -e 'end tell'`;
   childProcess.exec(cmdString);
 }
 
-function runCommandLinux() {
+function runCommandLinux(arg:any) {
   const childProcess = require('child_process');
-  childProcess.exec('gnome-terminal');
+  const sshCommand = 'gnome-terminal ssh ' + arg["username"] + ':' + arg["password"] + '@' + arg["ip"] + ' -p '+ arg["port"];
+  childProcess.exec(sshCommand);
 }
 
 export default class AppUpdater {
