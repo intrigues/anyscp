@@ -7,7 +7,6 @@ import { throws } from 'assert/strict';
 export default class CreateNewConnectionView extends React.Component {
   constructor(props) {
     super(props);
-    this.addConnection = this.addConnection.bind(this);
     this.state = {
       name: "",
       ip: "",
@@ -15,6 +14,12 @@ export default class CreateNewConnectionView extends React.Component {
       username: "",
       password: "",
       keypath: "",
+      errors: {
+        name: '',
+        ip: "",
+        port: "",
+        username: ""
+      }
     }
   }
 
@@ -35,6 +40,45 @@ export default class CreateNewConnectionView extends React.Component {
     ipcRenderer.send('fetch-connection-req', '');
   }
 
+  handleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    let errors = this.state.errors;
+    
+    const validDNSRegex = RegExp(/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/i);
+    const validIpAddressRegex = RegExp(/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/i);
+
+    switch (name) {
+      case 'name': 
+        errors.name = 
+          value.length < 1
+            ? 'please enter name'
+            : '';
+        break;
+      case 'ip': 
+        errors.ip = 
+          validDNSRegex.test(value) || validIpAddressRegex.test(value)
+            ? ''
+            : 'host name/ip invalid';
+        break;
+      case 'port': 
+        errors.port = 
+          value.length < 1 || value.length > 5
+            ? 'invalid port'
+            : '';
+        break;
+      case 'username':
+        errors.username =
+          value.length < 1
+            ? 'please enter username'
+            : '';
+        break;
+      default:
+        break;
+    }
+    this.setState({errors, [name]: value});
+  }
+  
   onChange = (e) => {
     let newState = this.state;
     newState[e.target.name] = e.target.value;
@@ -119,7 +163,13 @@ export default class CreateNewConnectionView extends React.Component {
                           <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
                         </svg>
                         <span class="ml-2 flex-1 w-0 truncate">
-                          {this.state.keypath}
+                          {(() => {
+                              if (this.state.keypath) {
+                                return this.state.keypath
+                              } else {
+                                return 'no file selected'
+                              }
+                            })()}
                         </span>
                       </div>
                       <div class="ml-4 flex-shrink-0">
@@ -128,7 +178,6 @@ export default class CreateNewConnectionView extends React.Component {
                             Select File
                           </label>
                       </div>
-
                     </li>
                   </ul>
                 </dd>
