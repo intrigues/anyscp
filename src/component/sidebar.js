@@ -32,6 +32,7 @@ export default class Sidebar extends React.Component {
   render() {
     return (
       <div className="sidebar pt-5 bg-white shadow">
+
         <div className="w-full px-3">
           <input
             className="appearance-none block w-full bg-gray-50 text-gray-700 border rounded-lg py-3 px-4 mb-3 leading-tight focus:outline-none"
@@ -51,25 +52,17 @@ export default class Sidebar extends React.Component {
           </ul>
         </div>
         <hr/>
+
         <div className="flex mx-3 mt-2">
+
           <span className="flex-1 mr-1">
             <Link to="/createNew">
-              <button
-                type="button"
-                className="px-1 py-1.5 font-medium bg-indigo-600 text-sm font-semibold hover:bg-indigo-700 text-white rounded-md shadow-sm w-full"
-              >
-                Add
-              </button>
+            <button type="button" className="w-full bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-sm">Add</button>
             </Link>
           </span>
 
           <span className="flex-1 ml-1">
-            <button
-              type="button"
-              className="px-1 py-1.5 font-medium bg-indigo-600 text-sm font-semibold hover:bg-indigo-700 text-white rounded-md shadow-sm w-full"
-            >
-              Import
-            </button>
+          <button type="button" className="w-full bg-white transition duration-150 ease-in-out hover:border-indigo-600 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-6 py-2 text-sm">Import</button>
           </span>
         </div>
       </div>

@@ -47,7 +47,7 @@ ipcMain.on('fetch-connection-req', async(event, arg) => {
 })
 
 ipcMain.on("update-connection", async (event, arg) => {
-  await db.run(`UPDATE connections SET name=?, ip=?, port=?, username=?, password=?, keypath=?, updated_at=? WHERE id=?`, [arg["name"], arg["ip"], arg["port"], arg["username"], arg["password"], arg["keypath"], new Date()], function(err:any) {
+  await db.run(`UPDATE connections SET name=?, ip=?, port=?, username=?, password=?, keypath=?, updated_at=? WHERE id=?`, [arg["name"], arg["ip"], arg["port"], arg["username"], arg["password"], arg["keypath"], new Date(), arg["id"]], function(err:any) {
     if (err) {
       return console.error(err.message);
     }
@@ -169,6 +169,7 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
+    resizable: false,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),

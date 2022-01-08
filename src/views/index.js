@@ -5,51 +5,38 @@ export default function Index() {
   return (
     <div className="sect">
     <div className="my-auto h-full flex justify-center items-center">
-    <div>
+    <div className="w-full">
       <h2 className="text-center text-indigo-600 text-5xl font-extrabold">AnySCP</h2>
       <p className="text-center text-xl font-semibold">A great way to manage you ssh connection</p>
-      <ul className="mt-8 text-center bg-white shadow overflow-hidden sm:rounded-lg py-3">
-        <li className="">
-          <span className="h-full item-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="text-green-600 inline mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p className="inline my-auto text-l font-semibold">
-              Stores Connection Details
-            </p>
-          </span>
-        </li>
-        <li className="mt-2">
-        <div className="h-full item-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="text-green-600 inline mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="inline my-auto text-l font-semibold">
-            Integrated File Browser
-          </span>
+
+      <div class="mx-auto xl:w-1/3 lg:w-1/3 md:w-1/2 sm:w-1/2 mb-4 px-6 mt-5">
+        <div class="py-5 px-4 bg-indigo-700 border border-gray-200 shadow rounded-lg text-left">
+            <h2 class="text-2xl text-white font-semibold mb-8">Free</h2>
+            <ul class="flex flex-col mb-6">
+                <li class="flex items-center mb-2.5">
+                    <img src="https://cdn.tuk.dev/assets/templates/weCare/checkMarkWhite.png" class="mr-4" alt="check-mark" />
+                    <p class="text-white text-base font-normal">Stores Connection Details</p>
+                </li>
+                <li class="flex items-center mb-2.5">
+                    <img src="https://cdn.tuk.dev/assets/templates/weCare/checkMarkWhite.png" class="mr-4" alt="check-mark" />
+                    <p class="text-white text-base font-normal">Integrated File Browser</p>
+                </li>
+                <li class="flex items-center mb-2.5">
+                    <img src="https://cdn.tuk.dev/assets/templates/weCare/checkMarkWhite.png" class="mr-4" alt="check-mark" />
+                    <p class="text-white text-base font-normal">Import from Cloud Providers</p>
+                </li>
+                <li class="flex items-center mb-2.5">
+                    <img src="https://cdn.tuk.dev/assets/templates/weCare/checkMarkWhite.png" class="mr-4" alt="check-mark" />
+                    <p class="text-white text-base font-normal">Proxy from bastion</p>
+                </li>
+                <li class="flex items-center mb-2.5">
+                    <img src="https://cdn.tuk.dev/assets/templates/weCare/checkMark.png" class="mr-4 opacity-0" alt="check-mark" />
+                    <p class="text-gray-400 text-base font-normal">Snippets</p>
+                </li>
+            </ul>
+            <button class="mt-5 w-full text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-indigo-700 focus:ring-white transition duration-150 ease-in-out rounded bg-white hover:bg-gray-100 px-8 py-3 text-base font-semibold py-3">Give us a star</button>
         </div>
-      </li>
-        <li className="mt-2">
-        <span className="h-full item-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="text-green-600 inline mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p className="inline my-auto text-l font-semibold">
-            Import from Cloud Providers
-          </p>
-        </span>
-      </li>
-      <li className="mt-5">
-      <a className="h-full item-center text-indigo-600" href="">
-      <p className="inline my-auto ">
-      Give us a star on Github
-      </p>
-      <svg xmlns="http://www.w3.org/2000/svg" className="inline h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-      </svg>
-      </a>
-    </li>
-      </ul>
+    </div>
     </div>
     </div>
     </div>
