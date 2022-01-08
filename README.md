@@ -1,11 +1,7 @@
-# erb-tailwind-example
+# AnySCP
 
-**See the last commit for the required changes for tailwind integration**
+AnySCP allows users to easily manage server and perfoming maintenance.
+This software is cross platform which allows all the users to have same enriching experience and able run it seamlessly no matter what system they are on.
 
-## Install
+AnySCP provides great UI/UX experience to make it pleasing to use.
 
-```bash
-git clone --depth 1 --branch main https://github.com/amilajack/erb-tailwind-example.git your-project-name
-cd your-project-name
-npm install
-```
