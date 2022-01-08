@@ -17,6 +17,106 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('dev.sqlite3');
+
+
+ipcMain.on('add-connection', async(event, arg) => {
+  const stmt = db.prepare('INSERT INTO connections (name, ip, port, username, password, keypath, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)');
+  stmt.run(arg['name'], arg['ip'], arg['port'], arg['username'], arg['password'], arg['keypath'], new Date());
+  console.log(event.processId);
+  event.reply('fetch-connection-req', '');
+})
+
+ipcMain.on('fetch-connection-req', async(event, arg) => {
+  console.log("requested to reload")
+  let result: any[];
+  result = [];
+  db.each("SELECT id, name, ip FROM connections", function(err: unknown, row: { id :number, name: string, ip: string; }) {
+    if (row.name != "" && row.name && row.ip != "" && row.ip) {
+      result.push({"id": row.id, "ip": row.ip, "name": row.name});
+    }
+    if (err) {
+      throw err;
+    }
+  });
+  await new Promise(f => setTimeout(f, 50));
+  event.reply('fetch-connection-res', result);
+
+  console.log(arg.info);
+})
+
+ipcMain.on("update-connection", async (event, arg) => {
+  await db.run(`UPDATE connections SET name=?, ip=?, port=?, username=?, password=?, keypath=?, updated_at=? WHERE id=?`, [arg["name"], arg["ip"], arg["port"], arg["username"], arg["password"], arg["keypath"], new Date(), arg["id"]], function(err:any) {
+    if (err) {
+      return console.error(err.message);
+    }
+  });
+  event.reply('fetch-connection-req', '');
+  console.log(arg.info)
+})
+
+ipcMain.on("delete-connection", async (event, arg) => {
+  await db.run(`DELETE FROM connections WHERE id=?`, arg, function(err:any) {
+    if (err) {
+      return console.error(err.message);
+    }
+  });
+  event.reply('fetch-connection-req', '');
+  console.log(arg.info)
+})
+
+ipcMain.handle('fetch-connection', async (event, arg) => {
+  console.log("fetch connection for : ", arg);
+  let connectionDetail: any[];
+  connectionDetail = [];
+  await db.get("SELECT id, name, ip, port, username, password, keypath FROM connections WHERE id=?", arg, function(err:any, data:any) {
+    if (err) {
+      return console.error(err.message);
+    }
+    connectionDetail = data
+  });
+  await new Promise(f => setTimeout(f, 50));
+  console.log("event.processId: ", event.processId);
+  return connectionDetail;
+});
+
+
+// opens terminal depending upon the operating system
+ipcMain.on('open-teminal', async (event, arg) => {
+  switch (process.platform) {
+    case 'win32':
+      runCommandWin32(arg);
+      break;
+    case 'darwin':
+      runCommandDarwin();
+      break;
+    case 'linux':
+      runCommandLinux();
+      break;
+    default:
+      console.log('Unknown platform');
+  }
+  console.log(event.processId)
+});
+
+function runCommandWin32(arg:any) {
+  const childProcess = require('child_process');
+  const sshCommand = 'start cmd.exe /k ssh ' + arg["username"] + "@" + arg["ip"] + " -p" + arg["port"]  ;
+  childProcess.exec(sshCommand);
+}
+
+function runCommandDarwin() {
+  const childProcess = require('child_process');
+  const cmdString = `osascript -e 'tell application "Terminal"' -e 'set newTab to do script ("ls")' -e 'end tell'`;
+  childProcess.exec(cmdString);
+}
+
+function runCommandLinux() {
+  const childProcess = require('child_process');
+  childProcess.exec('gnome-terminal');
+}
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -26,12 +126,6 @@ export default class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -75,9 +169,12 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
+    resizable: false,
     icon: getAssetPath('icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
