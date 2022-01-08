@@ -64,6 +64,14 @@ export default class ConnectionDetailsView extends React.Component {
     )
   }
 
+  getPath = (e) => {
+    if (e.target.files.length > 0) {
+      this.setState({
+        keypath: e.target.files[0].path
+      })
+    }
+  }
+
   render() {
     return (
       <div className="sect">
@@ -85,7 +93,7 @@ export default class ConnectionDetailsView extends React.Component {
                   Server name
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" type="text" name="name" id="name" onChange={this.onChange} value={this.state.name}/>
+                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" placeholder="example" type="text" name="name" id="name" onChange={this.onChange} value={this.state.name}/>
                 </dd>
               </div>
               <div class="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -93,7 +101,7 @@ export default class ConnectionDetailsView extends React.Component {
                   DNS/IP
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 w-full border rounded-md px-2 py-1" type="text" name="ip" id="ip" onChange={this.onChange} value={this.state.ip}/>
+                <input className="bg-gray-50 w-full border rounded-md px-2 py-1" placeholder="192.168.0.1" type="text" name="ip" id="ip" onChange={this.onChange} value={this.state.ip}/>
                 </dd>
               </div>
               <div class="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -101,7 +109,7 @@ export default class ConnectionDetailsView extends React.Component {
                   Port
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 border rounded-md w-1/3  px-2 py-1" type="number" name="port" id="port" onChange={this.onChange} value={this.state.port}/>
+                <input className="bg-gray-50 border rounded-md w-1/3  px-2 py-1" placeholder="22" type="number" name="port" id="port" onChange={this.onChange} value={this.state.port}/>
                 </dd>
               </div>
               <div class="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -109,7 +117,7 @@ export default class ConnectionDetailsView extends React.Component {
                 Username
               </dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              <input className="bg-gray-50 border rounded-md w-full px-2 py-1" type="text" name="username" id="username" onChange={this.onChange} value={this.state.username}/>
+              <input className="bg-gray-50 border rounded-md w-full px-2 py-1" placeholder="ubuntu" type="text" name="username" id="username" onChange={this.onChange} value={this.state.username}/>
               </dd>
             </div>
             <div class="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -117,7 +125,7 @@ export default class ConnectionDetailsView extends React.Component {
                   Password
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" type="password" name="password" id="password" onChange={this.onChange} value={this.state.password}/>
+                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" placeholder="password" type="password" name="password" id="password" onChange={this.onChange} value={this.state.password}/>
                 </dd>
               </div>
               <div class="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -137,9 +145,10 @@ export default class ConnectionDetailsView extends React.Component {
                         </span>
                       </div>
                       <div class="ml-4 flex-shrink-0">
-                        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-                          Choose
-                        </a>
+                        <label class="inline-block cursor-pointer font-medium text-indigo-600 hover:text-indigo-500">
+                          <input type="file" onChange={this.getPath} accept=".ppk,.pem" id="keypath" className="hidden"/>
+                            Select File
+                          </label>
                       </div>
                     </li>
                   </ul>
@@ -148,15 +157,12 @@ export default class ConnectionDetailsView extends React.Component {
               <div class="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
 
                 <dt class="my-auto text-sm font-medium text-gray-500">
-                <button onClick={this.openCommandPrompt} class="inline-flex items-center justify-center mr-1 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2">
-                  Connect
-                </button>
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 ml-auto">
                 <div>
-                <a href="#" class="inline-flex items-center justify-center ml-1 bg-white transition duration-150 ease-in-out hover:border-indigo-600 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-6 py-2 text-sm">
-                  Test Connectivity
-                </a>
+                <button onClick={this.openCommandPrompt} class="inline-flex items-center justify-center mr-1 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded border border-indigo-700 text-white px-6 py-2">
+                  Connect
+                </button>
                 <button onClick={this.updateConnection} class="inline-flex items-center justify-center ml-1 bg-white transition duration-150 ease-in-out hover:border-indigo-600 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-6 py-2 text-sm">
                   Save
                 </button>

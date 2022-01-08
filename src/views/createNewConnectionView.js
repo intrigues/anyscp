@@ -123,28 +123,21 @@ export default class CreateNewConnectionView extends React.Component {
                         </span>
                       </div>
                       <div class="ml-4 flex-shrink-0">
-                        <label class="custom-file-upload">
-                          <input type="file" onChange={this.getPath} accept=".ppk,.pem" id="keypath"/>
+                        <label class="inline-block cursor-pointer font-medium text-indigo-600 hover:text-indigo-500">
+                          <input type="file" onChange={this.getPath} accept=".ppk,.pem" id="keypath" className="hidden"/>
                             Select File
                           </label>
                       </div>
-
                     </li>
                   </ul>
                 </dd>
               </div>
               <div class="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="my-auto text-sm font-medium text-gray-500">
-                <button class="inline-flex items-center justify-center mr-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-indigo-700">
-                  Connect
-                </button>
+                <dt>
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 ml-auto">
                 <div>
-                <a href="#" class="inline-flex items-center justify-center ml-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                  Test Connectivity
-                </a>
-                <button onClick={this.addConnection} class="inline-flex items-center justify-center ml-1 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                <button onClick={this.addConnection} class="inline-flex items-center justify-center ml-1 bg-white transition duration-150 ease-in-out hover:bg-gray-100 hover:border-indigo-600 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-6 py-2 text-sm">
                   Save
                 </button>
                 </div>
