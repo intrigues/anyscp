@@ -57,12 +57,12 @@ export default class Sidebar extends React.Component {
 
           <span className="flex-1 mr-1">
             <Link to="/createNew">
-            <button type="button" className="w-full bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-sm">Add</button>
+            <button type="button" className="w-full bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded border border-indigo-700 hover:border-indigo-600 text-white px-6 py-2 text-sm">Add</button>
             </Link>
           </span>
 
           <span className="flex-1 ml-1">
-          <button type="button" className="w-full bg-white transition duration-150 ease-in-out hover:border-indigo-600 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-6 py-2 text-sm">Import</button>
+            <button type="button" className="w-full bg-white transition duration-150 ease-in-out hover:bg-gray-100 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-6 py-2 text-sm">Import</button>
           </span>
         </div>
       </div>

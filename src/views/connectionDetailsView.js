@@ -127,9 +127,7 @@ export default class ConnectionDetailsView extends React.Component {
             <h3 class="text-lg leading-6 font-medium text-gray-900">
               Server Information
             </h3>
-            <p class="mt-1 max-w-2xl text-sm text-gray-500">
-
-            </p>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500"></p>
           </div>
           <div class="border-t border-gray-200">
             <dl>
@@ -200,9 +198,10 @@ export default class ConnectionDetailsView extends React.Component {
                         </span>
                       </div>
                       <div class="ml-4 flex-shrink-0">
-                        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
-                          Choose
-                        </a>
+                        <label class="inline-block cursor-pointer font-medium text-indigo-600 hover:text-indigo-500">
+                          <input type="file" onChange={this.getPath} accept=".ppk,.pem" id="keypath" className="hidden"/>
+                            Select File
+                          </label>
                       </div>
                     </li>
                   </ul>
@@ -211,15 +210,12 @@ export default class ConnectionDetailsView extends React.Component {
               <div class="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
 
                 <dt class="my-auto text-sm font-medium text-gray-500">
-                <button onClick={this.openCommandPrompt} class="inline-flex items-center justify-center mr-1 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2">
-                  Connect
-                </button>
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 ml-auto">
                 <div>
-                <a href="#" class="inline-flex items-center justify-center ml-1 bg-white transition duration-150 ease-in-out hover:border-indigo-600 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-6 py-2 text-sm">
-                  Test Connectivity
-                </a>
+                <button onClick={this.openCommandPrompt} class="inline-flex items-center justify-center mr-1 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded border border-indigo-700 text-white px-6 py-2">
+                  Connect
+                </button>
                 <button onClick={this.updateConnection} class="inline-flex items-center justify-center ml-1 bg-white transition duration-150 ease-in-out hover:border-indigo-600 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-6 py-2 text-sm">
                   Save
                 </button>
