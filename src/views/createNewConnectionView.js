@@ -7,6 +7,7 @@ import { throws } from 'assert/strict';
 export default class CreateNewConnectionView extends React.Component {
   constructor(props) {
     super(props);
+    this.addConnection = this.addConnection.bind(this);
     this.state = {
       name: "",
       ip: "",
@@ -115,7 +116,7 @@ export default class CreateNewConnectionView extends React.Component {
                   Server name
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className={"focus:outline-none bg-gray-50 border rounded-md w-full px-2 py-1" + (this.state.errors.name ? 'border-red-500' : '') } type="text" name="name" id="name" onChange={this.onChange} value={this.state.name}/>
+                <input className={"focus:outline-none bg-gray-50 border rounded-md w-full px-2 py-1" + (this.state.errors.name ? 'border-red-500' : '') } placeholder="example" type="text" name="name" id="name" onChange={this.onChange} value={this.state.name}/>
                 </dd>
                 <p className="text-sm text-red-500 mt-1" >{this.state.errors.name}</p>
               </div>
@@ -124,7 +125,7 @@ export default class CreateNewConnectionView extends React.Component {
                   DNS/IP
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className={"focus:outline-none bg-gray-50 w-full border rounded-md px-2 py-1" + (this.state.errors.ip ? 'border-red-500' : '')} type="text" name="ip" id="ip" onChange={this.onChange} value={this.state.ip}/>
+                <input className={"focus:outline-none bg-gray-50 w-full border rounded-md px-2 py-1" + (this.state.errors.ip ? 'border-red-500' : '')} placeholder="192.168.1.1" type="text" name="ip" id="ip" onChange={this.onChange} value={this.state.ip}/>
                 </dd>
                 <p className="text-sm text-red-500 mt-1" >{this.state.errors.ip}</p>
               </div>
@@ -133,7 +134,7 @@ export default class CreateNewConnectionView extends React.Component {
                   Port
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className={"focus:outline-none bg-gray-50 border rounded-md w-1/3  px-2 py-1 " + (this.state.errors.port ? 'border-red-500' : '') } type="number" name="port" id="port" onChange={this.onChange} value={this.state.port}/>
+                <input className={"focus:outline-none bg-gray-50 border rounded-md w-1/3  px-2 py-1 " + (this.state.errors.port ? 'border-red-500' : '') } placeholder="22" type="number" name="port" id="port" onChange={this.onChange} value={this.state.port}/>
                 <p className="text-sm text-red-500 mt-1" >{this.state.errors.port}</p>
                 </dd>
               </div>
@@ -142,7 +143,7 @@ export default class CreateNewConnectionView extends React.Component {
                 Username
               </dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              <input className={"focus:outline-none bg-gray-50 border rounded-md w-full px-2 py-1" + (this.state.errors.username ? 'border-red-500' : '')} type="text" name="username" id="username" onChange={this.onChange} value={this.state.username}/>
+              <input className={"focus:outline-none bg-gray-50 border rounded-md w-full px-2 py-1" + (this.state.errors.username ? 'border-red-500' : '')} placeholder="ubuntu" type="text" name="username" id="username" onChange={this.onChange} value={this.state.username}/>
               <p className="text-sm text-red-500 mt-1" >{this.state.errors.username}</p>
               </dd>
             </div>
@@ -151,7 +152,7 @@ export default class CreateNewConnectionView extends React.Component {
                   Password
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" type="password" name="password" id="password" onChange={this.onChange} value={this.state.passwords}/>
+                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" placeholder="password" type="password" name="password" id="password" onChange={this.onChange} value={this.state.passwords}/>
                 </dd>
               </div>
               <div class="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
