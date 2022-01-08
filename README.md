@@ -5,3 +5,6 @@ This software is cross platform which allows all the users to have same enrichin
 
 AnySCP provides great UI/UX experience to make it pleasing to use.
 
+# Screenshots
+
+![Connection Details](/screenshots/anyscp-1.png?raw=true "Connection Details")
