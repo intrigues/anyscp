@@ -14,11 +14,16 @@ export default class ConnectionDetailsView extends React.Component {
       username: "",
       password: "",
       keypath: "",
+      errors: {
+        name: '',
+        ip: "",
+        port: "",
+        username: ""
+      }
     }
   }
 
   componentDidMount() {
-    console.log(this.props.match.params);
     (async () => {
         const result = await ipcRenderer.invoke('fetch-connection', this.props.match.params.id);
         this.setState({
@@ -56,8 +61,48 @@ export default class ConnectionDetailsView extends React.Component {
     ipcRenderer.send('fetch-connection-req', '');
   }
 
+  handleChange = (event) => {
+    event.preventDefault();
+    const { name, value } = event.target;
+    let errors = this.state.errors;
+    
+    const validDNSRegex = RegExp(/^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$/i);
+    const validIpAddressRegex = RegExp(/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/i);
+
+    switch (name) {
+      case 'name': 
+        errors.name = 
+          value.length < 1
+            ? 'please enter name'
+            : '';
+        break;
+      case 'ip': 
+        errors.ip = 
+          validDNSRegex.test(value) || validIpAddressRegex.test(value)
+            ? ''
+            : 'host name/ip invalid';
+        break;
+      case 'port': 
+        errors.port = 
+          value.length < 1 || value.length > 5
+            ? 'invalid port'
+            : '';
+        break;
+      case 'username':
+        errors.username =
+          value.length < 1
+            ? 'please enter username'
+            : '';
+        break;
+      default:
+        break;
+    }
+    this.setState({errors, [name]: value});
+  }
+
   onChange = (e) => {
     let newState = this.state;
+    this.handleChange(e);
     newState[e.target.name] = e.target.value;
     this.setState(
       {newState}
@@ -71,7 +116,7 @@ export default class ConnectionDetailsView extends React.Component {
       })
     }
   }
-
+  
   render() {
     return (
       <div className="sect">
@@ -82,9 +127,7 @@ export default class ConnectionDetailsView extends React.Component {
             <h3 class="text-lg leading-6 font-medium text-gray-900">
               Server Information
             </h3>
-            <p class="mt-1 max-w-2xl text-sm text-gray-500">
-
-            </p>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500"></p>
           </div>
           <div class="border-t border-gray-200">
             <dl>
@@ -93,39 +136,43 @@ export default class ConnectionDetailsView extends React.Component {
                   Server name
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" placeholder="example" type="text" name="name" id="name" onChange={this.onChange} value={this.state.name}/>
+                <input className={"focus:outline-none bg-gray-50 border rounded-md w-full px-2 py-1" + (this.state.errors.name ? 'border-red-500' : '') } type="text" name="name" id="name" onChange={this.onChange} value={this.state.name}/>
                 </dd>
+                <p className="text-sm text-red-500 mt-1" >{this.state.errors.name}</p>
               </div>
               <div class="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="my-auto text-sm font-medium text-gray-500">
                   DNS/IP
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 w-full border rounded-md px-2 py-1" placeholder="192.168.0.1" type="text" name="ip" id="ip" onChange={this.onChange} value={this.state.ip}/>
+                <input className={"focus:outline-none bg-gray-50 w-full border rounded-md px-2 py-1" + (this.state.errors.ip ? 'border-red-500' : '')} type="text" name="ip" id="ip" onChange={this.onChange} value={this.state.ip}/>
                 </dd>
+                <p className="text-sm text-red-500 mt-1" >{this.state.errors.ip}</p>
               </div>
               <div class="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="my-auto text-sm font-medium text-gray-500">
                   Port
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 border rounded-md w-1/3  px-2 py-1" placeholder="22" type="number" name="port" id="port" onChange={this.onChange} value={this.state.port}/>
+                <input className={"focus:outline-none bg-gray-50 border rounded-md w-1/3  px-2 py-1 " + (this.state.errors.port ? 'border-red-500' : '') } type="number" name="port" id="port" onChange={this.onChange} value={this.state.port}/>
                 </dd>
+                <p className="text-sm text-red-500 mt-1" >{this.state.errors.port}</p>
               </div>
               <div class="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="my-auto text-sm font-medium text-gray-500">
                 Username
               </dt>
               <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              <input className="bg-gray-50 border rounded-md w-full px-2 py-1" placeholder="ubuntu" type="text" name="username" id="username" onChange={this.onChange} value={this.state.username}/>
+              <input className={"focus:outline-none bg-gray-50 border rounded-md w-full px-2 py-1" + (this.state.errors.username ? 'border-red-500' : '')} type="text" name="username" id="username" onChange={this.onChange} value={this.state.username}/>
               </dd>
+              <p className="text-sm text-red-500 mt-1" >{this.state.errors.username}</p>
             </div>
             <div class="bg-gray-50 px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                 <dt class="my-auto text-sm font-medium text-gray-500">
                   Password
                 </dt>
                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                <input className="bg-gray-50 border rounded-md w-full px-2 py-1" placeholder="password" type="password" name="password" id="password" onChange={this.onChange} value={this.state.password}/>
+                <input className="focus:outline-none bg-gray-50 border rounded-md w-full px-2 py-1" type="password" name="password" id="password" onChange={this.onChange} value={this.state.password}/>
                 </dd>
               </div>
               <div class="bg-white px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -141,7 +188,13 @@ export default class ConnectionDetailsView extends React.Component {
                           <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
                         </svg>
                         <span class="ml-2 flex-1 w-0 truncate">
-                          {this.state.keypath}
+                        {(() => {
+                          if (this.state.keypath) {
+                            return this.state.keypath
+                          } else {
+                            return 'No File Selected'
+                          }
+                        })()}
                         </span>
                       </div>
                       <div class="ml-4 flex-shrink-0">
